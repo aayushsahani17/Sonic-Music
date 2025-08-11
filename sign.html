@@ -4,21 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up - Sonix</title>
+  <!-- External Resources -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .glow-text {
+      text-shadow: 0 0 10px rgba(123, 44, 191, 0.7);
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-b from-slate-900 via-black to-slate-950 text-white min-h-screen">
+<body class="bg-gradient-to-b from-gray-900 via-purple-900 to-gray-900 text-white min-h-screen">
 
   <!-- Navbar -->
-  <nav class="bg-black/40 backdrop-blur-md fixed top-0 w-full z-50 border-b border-slate-800">
+  <nav class="bg-black/80 backdrop-blur-md fixed top-0 w-full z-50 border-b border-purple-800/50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <!-- Logo -->
       <div class="flex items-center gap-2">
-        <i class="fas fa-music text-2xl text-cyan-400"></i>
-        <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Sonix</h1>
+        <i class="fas fa-music text-2xl text-purple-400"></i>
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent glow-text">
+          Sonix
+        </h1>
       </div>
+      <!-- Auth Links -->
       <div class="flex items-center gap-2 sm:gap-4">
-        <a class='bg-gradient-to-r from-cyan-500 to-teal-500 px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:opacity-90 transition' href='login.html'>Login</a>
-        <a class='border border-cyan-400 px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:bg-cyan-400/10 transition' href='singup.html'>Sign Up</a>
+        <a class="bg-gradient-to-r from-purple-600 to-pink-600 px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:opacity-90 transition whitespace-nowrap hover:shadow-lg hover:shadow-purple-500/30"
+          href="login.html">
+          Login
+        </a>
+        <a class="border border-purple-400 px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:bg-purple-400/10 transition whitespace-nowrap hover:shadow-lg hover:shadow-purple-500/20"
+          href="singup.html">
+          Sign Up
+        </a>
       </div>
     </div>
   </nav>
@@ -26,33 +46,33 @@
   <!-- Signup Form -->
   <div class="container mx-auto px-6 pt-24 pb-8">
     <div class="max-w-md mx-auto">
-      <div class="bg-slate-800/60 backdrop-blur-lg p-8 rounded-xl shadow-2xl border border-slate-700">
-        <h2 class="text-3xl font-bold mb-6 text-center text-cyan-300">Create Your Account</h2>
-        <div id="message" class="text-center mb-4 text-sm"></div>
-        <form id="signupForm" class="space-y-4">
+      <div class="bg-purple-900/30 backdrop-blur-lg p-8 rounded-xl shadow-2xl border border-purple-700">
+        <h2 class="text-3xl font-bold mb-6 text-center text-purple-500 glow-text">Create Your Account</h2>
+        <div id="message" class="text-center mb-4 text-sm opacity-0 transition-opacity duration-300"></div>
+        <form id="signupForm" class="space-y-4" novalidate>
           <div>
-            <label for="name" class="block mb-1 text-slate-300">Username</label>
-            <input type="text" id="name" required
-              class="w-full p-2 rounded-lg bg-slate-900 text-white border border-slate-700 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-400 shadow-inner" />
+            <label for="name" class="block mb-1 text-purple-200">Username</label>
+            <input type="text" id="name" required aria-label="Username"
+              class="w-full p-2 rounded-lg bg-purple-900/30 text-white border border-purple-700 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 shadow-inner" />
           </div>
           <div>
-            <label for="email" class="block mb-1 text-slate-300">Email</label>
-            <input type="email" id="email" required
-              class="w-full p-2 rounded-lg bg-slate-900 text-white border border-slate-700 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-400 shadow-inner" />
+            <label for="email" class="block mb-1 text-purple-200">Email</label>
+            <input type="email" id="email" required aria-label="Email"
+              class="w-full p-2 rounded-lg bg-purple-900/30 text-white border border-purple-700 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 shadow-inner" />
           </div>
           <div>
-            <label for="password" class="block mb-1 text-slate-300">Password</label>
-            <input type="password" id="password" required
-              class="w-full p-2 rounded-lg bg-slate-900 text-white border border-slate-700 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-400 shadow-inner" />
+            <label for="password" class="block mb-1 text-purple-200">Password</label>
+            <input type="password" id="password" required aria-label="Password"
+              class="w-full p-2 rounded-lg bg-purple-900/30 text-white border border-purple-700 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 shadow-inner" />
           </div>
           <button type="submit"
-            class="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white py-2 rounded-full hover:opacity-90 transition duration-200 shadow-lg">
+            class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 rounded-full hover:opacity-90 transition duration-200 shadow-lg hover:shadow-purple-500/30">
             Sign Up
           </button>
         </form>
-        <p class="mt-4 text-center text-slate-400">
+        <p class="mt-4 text-center text-purple-300">
           Already have an account?
-          <a class='text-cyan-400 hover:underline' href='login.html'>Login</a>
+          <a class="text-pink-400 hover:underline" href="login.html">Login</a>
         </p>
       </div>
     </div>
@@ -68,14 +88,12 @@
       const message = document.getElementById("message");
 
       // Basic validation
-      if (!name || !email) {
-        message.textContent = "Please enter all fields.";
-        message.className = "text-center text-red-500 mb-4 text-sm";
+      if (!name || !email || !password) {
+        showMessage("Please fill in all fields", "error");
         return;
       }
       if (password.length < 6) {
-        message.textContent = "Password must be at least 6 characters.";
-        message.className = "text-center text-red-500 mb-4 text-sm";
+        showMessage("Password must be at least 6 characters", "error");
         return;
       }
 
@@ -85,8 +103,7 @@
       const userExists = existingUsers.some(user => user.email === email);
 
       if (userExists) {
-        message.textContent = "User already exists with this email.";
-        message.className = "text-center text-red-500 mb-4 text-sm";
+        showMessage("User already exists with this email", "error");
         return;
       }
 
@@ -94,13 +111,20 @@
       localStorage.setItem("users", JSON.stringify(existingUsers));
       localStorage.setItem("currentUser", JSON.stringify(newUser));
 
-      message.textContent = `Welcome, ${name}! Redirecting...`;
-      message.className = "text-center text-green-500 mb-4 text-sm";
+      showMessage(`Welcome, ${name}! Redirecting...`, "success");
 
       setTimeout(() => {
         window.location.href = "index.html";
       }, 1500);
     });
+
+    function showMessage(text, type) {
+      const message = document.getElementById("message");
+      message.textContent = text;
+      message.className = `text-center mb-4 text-sm transition-opacity duration-300 ${type === "error" ? "text-red-400" : "text-green-400"}`;
+      requestAnimationFrame(() => message.style.opacity = "1");
+      setTimeout(() => message.style.opacity = "0", 2500);
+    }
   </script>
 </body>
 </html>
