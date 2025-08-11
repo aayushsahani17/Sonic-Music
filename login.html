@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Sonix</title>
+  <!-- External Resources -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .glow-text {
+      text-shadow: 0 0 10px rgba(123, 44, 191, 0.7);
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-b from-gray-900 via-purple-900 to-gray-900 text-white min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-black/80 backdrop-blur-md fixed top-0 w-full z-50 border-b border-purple-800/50">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <i class="fas fa-music text-2xl text-purple-400"></i>
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent glow-text">
+          Sonix
+        </h1>
+      </div>
+      <!-- Auth Links -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <a class="bg-gradient-to-r from-purple-600 to-pink-600 px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:opacity-90 transition whitespace-nowrap hover:shadow-lg hover:shadow-purple-500/30"
+          href="login.html">
+          Login
+        </a>
+        <a class="border border-purple-400 px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:bg-purple-400/10 transition whitespace-nowrap hover:shadow-lg hover:shadow-purple-500/20"
+          href="sign.html">
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="container mx-auto px-6 pt-24 pb-8">
+    <div class="max-w-md mx-auto">
+      <!-- Card -->
+      <div class="bg-purple-900/30 backdrop-blur-lg p-8 rounded-xl shadow-2xl border border-purple-700 neon-border">
+        <h2 class="text-3xl font-bold mb-6 text-center text-purple-500 glow-text">Login to Your Account</h2>
+        <!-- Status Message -->
+        <div id="message" class="text-center mb-4 text-sm opacity-0 transition-opacity duration-300"></div>
+        <!-- Form -->
+        <form id="loginForm" class="space-y-4" novalidate>
+          <!-- Email -->
+          <div>
+            <label for="email" class="block mb-1 text-purple-200">Email</label>
+            <input type="email" id="email" aria-label="Email" required
+              class="w-full p-2 rounded-lg bg-purple-900/30 text-white border border-purple-700 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 shadow-inner" />
+          </div>
+          <!-- Password -->
+          <div>
+            <label for="password" class="block mb-1 text-purple-200">Password</label>
+            <input type="password" id="password" aria-label="Password" required
+              class="w-full p-2 rounded-lg bg-purple-900/30 text-white border border-purple-700 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 shadow-inner" />
+          </div>
+          <!-- Button -->
+          <button type="submit" id="loginBtn"
+            class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 rounded-full hover:opacity-90 transition duration-200 shadow-lg hover:shadow-purple-500/30">
+            Login
+          </button>
+        </form>
+        <!-- Sign Up Link -->
+        <p class="mt-4 text-center text-purple-300">
+          Don't have an account?
+          <a class="text-pink-400 hover:underline" href="sign.html">Sign Up</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginForm = document.getElementById("loginForm");
+      const message = document.getElementById("message");
+      const loginBtn = document.getElementById("loginBtn");
+
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (currentUser) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const password = document.getElementById("password").value;
+
+        if (!email || !password) {
+          showMessage("Please fill in all fields", "error");
+          return;
+        }
+
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const foundUser = users.find(user => user.email === email && user.password === password);
+
+        if (!foundUser) {
+          showMessage("Invalid email or password", "error");
+          return;
+        }
+
+        localStorage.setItem("currentUser", JSON.stringify(foundUser));
+        showMessage(`Welcome back, ${foundUser.username}! Redirecting...`, "success");
+
+        loginBtn.disabled = true;
+        setTimeout(() => window.location.href = "index.html", 1500);
+      });
+
+      function showMessage(text, type) {
+        message.textContent = text;
+        message.className = `text-center mb-4 text-sm transition-opacity duration-300 ${type === "error" ? "text-red-400" : "text-green-400"}`;
+        requestAnimationFrame(() => message.style.opacity = "1");
+        setTimeout(() => message.style.opacity = "0", 2500);
+      }
+    });
+  </script>
+</body>
+</html>

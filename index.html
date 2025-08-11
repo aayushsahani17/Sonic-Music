@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonix</title>
+   
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="app.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .hidden {
+            display: none;
+        }
+        .custom-audio {
+            height: 40px;
+        }
+        .custom-audio::-webkit-media-controls-panel {
+            background-color: #1a1a2e;
+        }
+        .custom-audio::-webkit-media-controls-play-button,
+        .custom-audio::-webkit-media-controls-mute-button {
+            background-color: #7b2cbf;
+            border-radius: 50%;
+        }
+        .custom-audio::-webkit-media-controls-current-time-display,
+        .custom-audio::-webkit-media-controls-time-remaining-display {
+            color: white;
+        }
+        .song-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(123, 44, 191, 0.3);
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(123, 44, 191, 0.7);
+        }
+        .neon-border {
+            box-shadow: 0 0 10px rgba(123, 44, 191, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-b from-gray-900 via-purple-900 to-gray-900 text-white max-h-screen">
+
+    <nav class="bg-black/80 backdrop-blur-md fixed top-0 w-full z-50 border-b border-purple-800/50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+
+            <div class="flex items-center gap-2">
+                <button id="mobileMenuBtn" class="lg:hidden text-white">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <i class="fas fa-music text-2xl text-purple-400"></i>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent glow-text">
+                    Sonix
+                </h1>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-4" id="authButtons">
+                <a class='bg-gradient-to-r from-purple-600 to-pink-600 px-4 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:opacity-90 transition whitespace-nowrap hover:shadow-lg hover:shadow-purple-500/30' href='login.html' id='loginBtn'>
+                    Login
+                </a>
+                <a class='border border-purple-400 px-4 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:bg-purple-400/10 transition whitespace-nowrap hover:shadow-lg hover:shadow-purple-500/20' href='sign.html' id='signupBtn'>
+                    Sign Up
+                </a>
+            
+                <a href='/profile'>
+                    <div id="userProfile" class="flexitems-center gap-4 hidden hover:text-purple-400 cursor-pointer">
+                        <span id="usernameDisplay" class="hover:text-purple-400"></span>
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Search Bar -->
+    <div class="lg:hidden fixed top-16 left-0 right-0 z-40 px-4 py-2 bg-black/80 backdrop-blur-md border-b border-purple-800/50">
+        <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-purple-400"></i>
+            <input type="text" id="mobileSearchInput" placeholder="Search songs, artists..."
+                title="Search by title, artist, album and genre..."
+                class="w-full rounded-lg p-2 pl-10 bg-purple-900/30 text-white border border-purple-700 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-600/50">
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container px-6 mt-2 flex gap-6 mx-auto pt-16 mb-2 h-[calc(100vh-7rem)]">
+        <!-- Sidebar/Drawer -->
+        <div id="sidebar" class="fixed top-0 left-0 w-64 bg-black/90 backdrop-blur-lg transform -translate-x-full lg:translate-x-0 lg:relative transition-transform duration-300 ease-in-out z-40 flex flex-col border-r border-purple-800/30">
+            <!-- Search Section -->
+            <div class="flex-none pt-20 px-4">
+                <div class="relative hidden lg:block">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-purple-400"></i>
+                    <input type="text" id="searchInput" placeholder="Search songs..."
+                        title="Search by title, artist, album and genre..."
+                        class="w-full rounded-lg p-2 pl-10 bg-purple-900/30 text-white border border-purple-700 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-600/50">
+                </div>
+            </div>
+            
+            <!-- Navigation Links -->
+            <div class="flex-none px-4">
+                <div id="createPlaylist" class="justify-between flex items-center text-lg font-bold mb-4 mt-4 hover:text-purple-400 transition cursor-pointer group" title="Add new playlist" onclick="toggleInputArea()">
+                    <h2 class="group-hover:glow-text">Create Playlist</h2>
+                    <i class="fas fa-plus group-hover:text-pink-400"></i>
+                </div>
+                
+                <div class="hidden pl-4 mt-2 space-y-2 z-20" id="newPlaylist">
+                    <input type="text" class="bg-purple-900/30 px-3 py-1 rounded-lg border border-purple-700 focus:border-purple-500 focus:outline-none" required placeholder="Playlist name...">
+                    <button class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-lg text-sm transition">Create</button>
+                </div>
+
+                <div class="mb-4">
+                    <button id="favoritesBtn" class="flex items-center justify-between w-full p-3 rounded-lg hover:bg-purple-900/30 transition group">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-home text-purple-400 group-hover:text-pink-400"></i>
+                            <span class="group-hover:text-purple-300">Home</span>
+                        </div>
+                    </button>
+                    <button id="trendingBtn" class="flex items-center justify-between w-full p-3 rounded-lg hover:bg-purple-900/30 transition group">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-fire text-purple-400 group-hover:text-pink-400"></i>
+                            <span class="group-hover:text-purple-300">Trending</span>
+                        </div>
+                    </button>
+                    <button id="libraryBtn" class="flex items-center justify-between w-full p-3 rounded-lg hover:bg-purple-900/30 transition group">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-music text-purple-400 group-hover:text-pink-400"></i>
+                            <span class="group-hover:text-purple-300">My Library</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Playlist Section -->
+            <div class="flex-1 overflow-y-auto hide-scrollbar px-4">
+                <div class="overflow-y-auto bg-purple-900/20 backdrop-blur-lg rounded-xl p-4 mt-4 neon-border">
+                    <h3 class="text-lg font-bold mb-4 text-purple-300">Your Playlists</h3>
+                    <div class="space-y-2" id="playlistsContainer">
+                        <!-- Playlist items will be inserted here -->
+                        <div class="p-2 rounded-lg hover:bg-purple-800/30 cursor-pointer transition flex items-center gap-2">
+                            <i class="fas fa-list-music text-purple-400"></i>
+                            <span>Favorites</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Overlay -->
+        <div id="overlay" class="fixed inset-0 bg-black/70 z-30 hidden lg:hidden"></div>
+
+        <!-- Song Grid -->
+        <div class="flex-1 overflow-y-auto hide-scrollbar">
+            <div id="loading" class="text-center mt-4 hidden">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+                <p class="mt-2 text-purple-300">Loading songs...</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2" id="songsList">
+                <!-- Song Card Example (will be dynamically generated) -->
+                <div class="song-card bg-gradient-to-b from-purple-900/30 to-gray-900/50 rounded-xl p-4 transition duration-300 cursor-pointer neon-border">
+                    <div class="relative group">
+                        <img src="https://via.placeholder.com/300" alt="Album Cover" class="w-full rounded-lg mb-3 aspect-square object-cover">
+                        <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <i class="fas fa-play text-white"></i>
+                        </button>
+                    </div>
+                    <h3 class="font-bold truncate">Song Title</h3>
+                    <p class="text-purple-300 text-sm truncate">Artist Name</p>
+                    <div class="flex justify-between items-center mt-2 text-xs text-purple-400">
+                        <span>3:45</span>
+                        <button class="hover:text-pink-400">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Bar -->
+    <div class="sticky bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md border-t border-purple-800/50">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <!-- Song Info -->
+                <div class="flex items-center gap-4 w-full md:w-1/4">
+                    <img id="currentSongImg" src="assets/default-song-preview.png" class="w-16 h-16 rounded-lg object-cover neon-border" alt="Album Art">
+                    <div>
+                        <h3 id="currentSongTitle" class="font-bold truncate text-purple-100">No song playing</h3>
+                        <p id="currentArtist" class="text-purple-300 text-sm truncate">-</p>
+                    </div>
+                </div>
+                
+                <!-- Audio Player -->
+                <div class="flex flex-col items-center w-full md:w-2/4">
+                    <div class="flex items-center gap-4 mb-2">
+                        <button class="text-purple-300 hover:text-white">
+                            <i class="fas fa-random"></i>
+                        </button>
+                        <button class="text-purple-300 hover:text-white">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button class="bg-purple-600 hover:bg-purple-700 w-8 h-8 rounded-full flex items-center justify-center">
+                            <i class="fas fa-play text-white"></i>
+                        </button>
+                        <button class="text-purple-300 hover:text-white">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                        <button class="text-purple-300 hover:text-white">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <div class="w-full max-w-2xl">
+                        <audio id="current-song" controls class="w-full custom-audio">
+                            <source src="" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+                
+                <!-- Volume and Controls -->
+                <div class="hidden md:flex items-center gap-4 w-full md:w-1/4 justify-end">
+                    <button class="text-purple-300 hover:text-white">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <button class="text-purple-300 hover:text-white">
+                        <i class="fas fa-list-ul"></i>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-volume-up text-purple-300"></i>
+                        <input type="range" min="0" max="100" value="80" class="w-24 accent-purple-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle playlist input field
+        function toggleInputArea() {
+            const inputArea = document.getElementById('newPlaylist');
+            inputArea.classList.toggle('hidden');
+        }
+    </script>
+</body>
+
+</html>

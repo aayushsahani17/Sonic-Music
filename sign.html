@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Sonix</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-gradient-to-b from-slate-900 via-black to-slate-950 text-white min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-black/40 backdrop-blur-md fixed top-0 w-full z-50 border-b border-slate-800">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-music text-2xl text-cyan-400"></i>
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Sonix</h1>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-4">
+        <a class='bg-gradient-to-r from-cyan-500 to-teal-500 px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:opacity-90 transition' href='login.html'>Login</a>
+        <a class='border border-cyan-400 px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full hover:bg-cyan-400/10 transition' href='singup.html'>Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Signup Form -->
+  <div class="container mx-auto px-6 pt-24 pb-8">
+    <div class="max-w-md mx-auto">
+      <div class="bg-slate-800/60 backdrop-blur-lg p-8 rounded-xl shadow-2xl border border-slate-700">
+        <h2 class="text-3xl font-bold mb-6 text-center text-cyan-300">Create Your Account</h2>
+        <div id="message" class="text-center mb-4 text-sm"></div>
+        <form id="signupForm" class="space-y-4">
+          <div>
+            <label for="name" class="block mb-1 text-slate-300">Username</label>
+            <input type="text" id="name" required
+              class="w-full p-2 rounded-lg bg-slate-900 text-white border border-slate-700 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-400 shadow-inner" />
+          </div>
+          <div>
+            <label for="email" class="block mb-1 text-slate-300">Email</label>
+            <input type="email" id="email" required
+              class="w-full p-2 rounded-lg bg-slate-900 text-white border border-slate-700 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-400 shadow-inner" />
+          </div>
+          <div>
+            <label for="password" class="block mb-1 text-slate-300">Password</label>
+            <input type="password" id="password" required
+              class="w-full p-2 rounded-lg bg-slate-900 text-white border border-slate-700 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-400 shadow-inner" />
+          </div>
+          <button type="submit"
+            class="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white py-2 rounded-full hover:opacity-90 transition duration-200 shadow-lg">
+            Sign Up
+          </button>
+        </form>
+        <p class="mt-4 text-center text-slate-400">
+          Already have an account?
+          <a class='text-cyan-400 hover:underline' href='login.html'>Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("message");
+
+      // Basic validation
+      if (!name || !email) {
+        message.textContent = "Please enter all fields.";
+        message.className = "text-center text-red-500 mb-4 text-sm";
+        return;
+      }
+      if (password.length < 6) {
+        message.textContent = "Password must be at least 6 characters.";
+        message.className = "text-center text-red-500 mb-4 text-sm";
+        return;
+      }
+
+      const newUser = { username: name, email, password }; // Plain-text password: ONLY for demo
+
+      const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+      const userExists = existingUsers.some(user => user.email === email);
+
+      if (userExists) {
+        message.textContent = "User already exists with this email.";
+        message.className = "text-center text-red-500 mb-4 text-sm";
+        return;
+      }
+
+      existingUsers.push(newUser);
+      localStorage.setItem("users", JSON.stringify(existingUsers));
+      localStorage.setItem("currentUser", JSON.stringify(newUser));
+
+      message.textContent = `Welcome, ${name}! Redirecting...`;
+      message.className = "text-center text-green-500 mb-4 text-sm";
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
