@@ -116,9 +116,7 @@
         localStorage.setItem("currentUser", JSON.stringify(foundUser));
         showMessage(`Welcome back, ${foundUser.username}! Redirecting...`, "success");
 
-        loginBtn.disabled = true;
-        setTimeout(() => window.location.href = "index.html", 1500);
-      });
+       
 
       function showMessage(text, type) {
         message.textContent = text;
